@@ -1,0 +1,228 @@
+<div class = "row" >
+    <div class ="col-sm-6">
+        <div class="panel panel-primary">
+                <div class="panel-heading">Current Order Book Summary</div>
+                    <div class = "panel-body">
+                        <div class = "table-repsonsive">
+                            <table class = "table table-striped">
+                                    <thead>
+                                            <tr>
+                                                <th style = "width: 10px">Currency Pair</th>
+                                                <th style = "width: 1px">Order Type</th>
+                                                <th>GDAX</th>
+                                                <th>Kraken</th>
+                                                <th></th>
+                                                <th style = "width: 10px"></th>
+                                            </tr>
+                                     </thead> 
+                                     <tbody>
+                                            <tr>
+                                                <td >{{currencies[0].GDAXticker}}</td>
+                                                <td >BID </td>
+                                                <td >{{currencies[0].GDAXprice_bid}}</td>
+                                                <td>{{currencies[0].Krakenprice_bid}}</td>
+                                                <td> <button (click)="viewbid()">View Top 50 Bids</button> </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td >{{currencies[0].GDAXticker}}</td>
+                                                <td >ASK</td>
+                                                <td>{{currencies[0].GDAXprice_ask}}</td>
+                                                <td>{{currencies[0].Krakenprice_ask}}</td>
+                                                <td><button (click)="viewask()">View Top 50 Asks</button></td>
+                                            </tr>
+                                    </tbody>
+                            </table>
+                        </div>
+                    </div>
+        </div>
+    </div>
+
+        <div class="col-sm-6">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Profit Attribution - Based on Best Scenario</div>
+                        <div class = "panel-body">
+                                <div class = "table-repsonsive">
+                                        <table class = "table table-striped">
+                                                <thead>
+                                                        <tr>
+                                                            <th>Action</th>
+                                                            <th>Amount</th>
+                                                            <th>Description</th>
+                                                        </tr>
+                                                 </thead> 
+                                                 <tbody>
+                                                        <tr>
+                                                            <td >Buy Price</td>
+                                                            <td >{{currencies[0].Scenario_buy_price}}</td>
+                                                            <td >{{currencies[0].Scenario_buy_exchange}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td> Buy Taker Fee</td>
+                                                            <td >{{currencies[0].Scenario_buy_taker_amount}}</td>
+                                                            <td >{{currencies[0].Scenario_buy_taker_fee}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td >Sell Price</td>
+                                                            <td >{{currencies[0].Scenario_sell_price}}</td>
+                                                            <td >{{currencies[0].Scenario_sell_exchange}}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td> Sell Taker Fee</td>
+                                                            <td >{{currencies[0].Scenario_sell_taker_amount}}</td>
+                                                            <td >{{currencies[0].Scenario_sell_taker_fee}}</td>
+                                                            </tr>
+                                                        <tr>
+                                                            <td>Profit</td>
+                                                            <td>{{currencies[0].Scenario_profit}}</td>
+                                                            <td ></td>
+                                                        </tr>
+                                                </tbody>
+                                        </table>
+                                </div>                   
+                        </div>
+                </div>
+            </div>  
+    
+</div>
+
+<div class="row">
+
+</div>
+
+
+<div class="row">
+    <div class = "col-sm-6">
+        <h4>{{currencies[0].GDAXticker}} - GDAX Bid Spread Graph</h4>
+        <canvas id="chart_GDAX_Bid">{{chart_GDAX_Bid}}</canvas>
+    </div>
+
+    <div class = "col-sm-6">
+            <h4>{{currencies[0].GDAXticker}} - GDAX Ask Spread Graph</h4>
+            <canvas id="chart_GDAX_Ask">{{chart_GDAX_Ask}}</canvas>
+    </div>
+</div>
+
+<div class="row">
+        <div class = "col-sm-6">
+            <h4>{{currencies[0].Krakenticker}} - Kraken Bid Spread Graph</h4>
+            <canvas id="chart_Kraken_Bid">{{chart_Kraken_Bid}}</canvas>
+        </div>
+    
+        <div class = "col-sm-6">
+                <h4>{{currencies[0].Krakenticker}} - Kraken Ask Spread Graph</h4>
+                <canvas id="chart_Kraken_Ask">{{chart_Kraken_Ask}}</canvas>
+        </div>
+    </div>
+
+<div class = "row">
+<div class = "col-sm-4" *ngIf="bidhide">
+    <div class="panel panel-primary">
+        <div class="panel-heading"> {{currencies[0].GDAXticker}} - GDAX Top 50 BID Orders</div>
+            <div class = "panel-body">
+                    <div class = "table-repsonsive">
+                            <table class = "table table-striped">
+                                    <thead>
+                                            <tr>
+                                                <th style = "width: 10px">Order Type</th>
+                                                <th style = "width: 10px">Price</th>
+                                                <th style = "width: 1px">Quantity</th>
+                                            </tr>
+                                     </thead> 
+                                     <tbody>
+                                            <tr *ngFor="let x of currencies[0].GDAX_topfifty_orders['bids']">
+                                                <td>BID</td>
+                                                <td >{{x[0]}}</td>
+                                                <td >{{x[1]}}</td>
+                                            </tr>
+                                  </tbody>
+                            </table>
+                    </div>                 
+                </div>
+            </div>
+    </div>
+
+    <div class = "col-sm-4" *ngIf="bidhide">
+        <div class="panel panel-primary">
+            <div class="panel-heading"> {{currencies[0].GDAXticker}} - Kraken Top 50 BID Orders</div>
+                <div class = "panel-body">
+                        <div class = "table-repsonsive">
+                                <table class = "table table-striped">
+                                        <thead>
+                                                <tr>
+                                                    <th style = "width: 10px">Order Type</th>
+                                                    <th style = "width: 10px">Price</th>
+                                                    <th style = "width: 1px">Quantity</th>
+                                                </tr>
+                                         </thead> 
+                                         <tbody>
+                                                <tr *ngFor="let x of currencies[0].Kraken_topfifty_orders['bids']">
+                                                    <td>BID</td>
+                                                    <td >{{x[0]}}</td>
+                                                    <td >{{x[1]}}</td>
+                                                </tr>
+                                      </tbody>
+                                </table>
+                        </div>                 
+                    </div>
+                </div>
+        </div>
+
+
+<div class = "col-sm-4" *ngIf="askhide">
+        <div class="panel panel-primary">
+            <div class="panel-heading"> {{currencies[0].GDAXticker}} - GDAX Top 50 ASK Orders</div>
+                <div class = "panel-body">
+                        <div class = "table-repsonsive">
+                                <table class = "table table-striped">
+                                        <thead>
+                                                <tr>
+                                                    <th style = "width: 10px">Order Type</th>
+                                                    <th style = "width: 10px">Price</th>
+                                                    <th style = "width: 1px">Quantity</th>
+                                                </tr>
+                                         </thead> 
+                                         <tbody>
+                                                <tr *ngFor="let x of currencies[0].GDAX_topfifty_orders['asks']">
+                                                    <td>ASK</td>
+                                                    <td >{{x[0]}}</td>
+                                                    <td >{{x[1]}}</td>
+                                                </tr>
+                                      </tbody>
+                                </table>
+                        </div>
+                                       
+             </div>
+        </div>
+    </div>
+
+    <div class = "col-sm-4" *ngIf="askhide">
+            <div class="panel panel-primary">
+                <div class="panel-heading"> {{currencies[0].GDAXticker}} - Kraken Top 50 ASK Orders</div>
+                    <div class = "panel-body">
+                            <div class = "table-repsonsive">
+                                    <table class = "table table-striped">
+                                            <thead>
+                                                    <tr>
+                                                        <th style = "width: 10px">Order Type</th>
+                                                        <th style = "width: 10px">Price</th>
+                                                        <th style = "width: 1px">Quantity</th>
+                                                    </tr>
+                                             </thead> 
+                                             <tbody>
+                                                    <tr *ngFor="let x of currencies[0].Kraken_topfifty_orders['asks']">
+                                                        <td>ASK</td>
+                                                        <td >{{x[0]}}</td>
+                                                        <td >{{x[1]}}</td>
+                                                    </tr>
+                                          </tbody>
+                                    </table>
+                            </div>
+                                           
+                 </div>
+            </div>
+        </div>
+    
+
+
+</div>
